@@ -1,15 +1,34 @@
+// เพิ่มการ import ฟังก์ชันจาก sheets-api.js
+import { fetchPlayers, addPlayer } from './sheets-api.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     const registrationForm = document.getElementById('registration-form');
     const playerListDiv = document.getElementById('player-list');
     
     // ฟังก์ชันสำหรับบันทึกข้อมูลไปยัง Google Sheets
     async function submitToGoogleSheets(formData) {
-        // จะใส่โค้ดเชื่อมต่อกับ Google Sheets API ในส่วนถัดไป
-        console.log('บันทึกข้อมูล:', formData);
-        
-        // ตัวอย่างการแสดงผลชั่วคราว (ในขั้นตอนถัดไปจะเชื่อมต่อกับ API จริง)
-        alert('ลงทะเบียนสำเร็จ!');
-        registrationForm.reset();
+        try {
+            const result = await addPlayer({
+                date: formData.playDate,
+                time: `${formData.startTime}-${formData.endTime}`,
+                venue: formData.venue,
+                name: formData.playerName,
+                lineId: formData.lineId,
+                status: 'pending'
+            });
+            
+            if (result.success) {
+                alert('ลงทะเบียนสำเร็จ!');
+                registrationForm.reset();
+                // รีโหลดรายชื่อผู้เล่น
+                fetchPlayerList();
+            } else {
+                alert(`เกิดข้อผิดพลาด: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล:', error);
+            alert('เกิดข้อผิดพลาด: ไม่สามารถบันทึกข้อมูลได้');
+        }
     }
     
     // จัดการการส่งฟอร์ม
@@ -32,18 +51,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // ฟังก์ชันดึงข้อมูลรายชื่อผู้เล่น
     async function fetchPlayerList() {
-        // จะใส่โค้ดดึงข้อมูลจาก Google Sheets ในส่วนถัดไป
-        
-        // ตัวอย่างข้อมูลชั่วคราว
-        const samplePlayers = [
-            { name: 'แจน', status: 'confirmed' },
-            { name: 'พี่เต็ม', status: 'confirmed' },
-            { name: 'พี่ต่าย', status: 'confirmed' },
-            { name: 'ชาย', status: 'pending' },
-            { name: 'ปอนด์', status: 'pending' }
-        ];
-        
-        renderPlayerList(samplePlayers);
+        try {
+            const players = await fetchPlayers();
+            renderPlayerList(players);
+        } catch (error) {
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
+            // แสดงข้อความแจ้งเตือน
+            playerListDiv.innerHTML = '<h3>รายชื่อผู้ลงทะเบียน</h3><p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+        }
     }
     
     // แสดงรายชื่อผู้เล่น
