@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ติดตามการชำระเงิน - ระบบลงทะเบียนแบดมินตัน</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ระบบลงทะเบียนแบดมินตัน</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าหลัก</a></li>
+                    <li><a href="registration.html">ลงทะเบียนเล่น</a></li>
+                    <li><a href="booking.html">จองสนาม</a></li>
+                    <li><a href="calculate.html">คำนวณค่าใช้จ่าย</a></li>
+                    <li><a href="payment.html" class="active">ติดตามการชำระเงิน</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>ติดตามการชำระเงิน</h2>
+        
+        <div class="booking-selection" style="margin-bottom: 20px;">
+            <div class="form-group">
+                <label for="select-booking">เลือกรายการจองสนาม</label>
+                <select id="select-booking" name="select-booking">
+                    <option value="">-- เลือกรายการจอง --</option>
+                    <option value="sample1">KN Complex - วันอาทิตย์ที่ 15 เม.ย. 68 (17:00-20:00)</option>
+                    <option value="sample2">My House - วันอาทิตย์ที่ 8 เม.ย. 68 (17:00-20:00)</option>
+                    <option value="sample3">SCG Court - วันอาทิตย์ที่ 1 เม.ย. 68 (12:00-15:00)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="payment-dashboard" style="display: none;">
+            <div class="form-section">
+                <h3>ข้อมูลการจองสนาม</h3>
+                <div class="form-row">
+                    <div class="info-item">
+                        <label>สถานที่:</label>
+                        <div id="venue-display">KN Complex</div>
+                    </div>
+                    <div class="info-item">
+                        <label>วันที่:</label>
+                        <div id="date-display">วันอาทิตย์ที่ 15 เม.ย. 68</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="info-item">
+                        <label>เวลา:</label>
+                        <div id="time-display">17:00-20:00 น. (3 ชม.)</div>
+                    </div>
+                    <div class="info-item">
+                        <label>จำนวนผู้เล่น:</label>
+                        <div id="player-count-display">14 คน</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-stats">
+                <div class="stat-card">
+                    <div class="stat-label">ยอดรวมทั้งหมด</div>
+                    <div class="stat-value" id="total-amount">3,330 บาท</div>
+                    <div class="stat-meta" id="player-count-stat">จากผู้เล่น 14 คน</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">ชำระแล้ว</div>
+                    <div class="stat-value" id="paid-amount">2,316 บาท</div>
+                    <div class="stat-meta" id="paid-players">10 คน (69.5%)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">รอชำระ</div>
+                    <div class="stat-value" id="pending-amount">1,014 บาท</div>
+                    <div class="stat-meta" id="pending-players">4 คน (30.5%)</div>
+                </div>
+            </div>
+            
+            <div class="payment-filter">
+                <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+                <button class="filter-btn" data-filter="paid">ชำระแล้ว</button>
+                <button class="filter-btn" data-filter="pending">รอชำระ</button>
+                <button class="record-payment-btn">+ บันทึกการชำระเงิน</button>
+            </div>
+            
+            <div class="form-section">
+                <h3>รายการชำระเงิน</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 25%;">ชื่อผู้เล่น</th>
+                            <th style="width: 15%;">สถานะ</th>
+                            <th style="width: 15%;">ประเภท</th>
+                            <th style="width: 15%; text-align: right;">จำนวนเงิน (บาท)</th>
+                            <th style="width: 15%;">เวลาที่ชำระ</th>
+                            <th style="width: 10%; text-align: center;">ดำเนินการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payment-list">
+                        <!-- ข้อมูลจะถูกเพิ่มโดย JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="payment-form" class="form-section" style="display: none;">
+                <h3>บันทึกการชำระเงิน</h3>
+                <form id="record-payment-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="player-select">ชื่อผู้เล่น</label>
+                            <select id="player-select" name="player-select" required>
+                                <option value="">-- เลือกผู้เล่น --</option>
+                                <!-- ตัวเลือกจะถูกเพิ่มโดย JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment-amount">จำนวนเงิน (บาท)</label>
+                            <input type="number" id="payment-amount" name="payment-amount" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="payment-date">วันที่ชำระ</label>
+                            <input type="date" id="payment-date" name="payment-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment-time">เวลาที่ชำระ</label>
+                            <input type="time" id="payment-time" name="payment-time" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="upload-slip">อัปโหลดสลิปการโอนเงิน</label>
+                            <div class="upload-area">
+                                <input type="file" id="upload-slip" name="upload-slip" accept="image/*">
+                                <div class="upload-placeholder">
+                                    คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวางที่นี่<br>
+                                    <small>รองรับไฟล์ JPG, PNG ขนาดไม่เกิน 5MB</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment-note">หมายเหตุ (ถ้ามี)</label>
+                            <textarea id="payment-note" name="payment-note" rows="4"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="button" id="cancel-payment" class="btn" style="background-color: #ccc; margin-right: 10px;">ยกเลิก</button>
+                        <button type="submit" class="btn">บันทึกการชำระเงิน</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ระบบลงทะเบียนแบดมินตัน | <a href="https://github.com/yourusername/badminton-registration" target="_blank">GitHub</a></p>
+        </div>
+    </footer>
+
+    <script src="js/payment.js"></script>
+</body>
+</html>
