@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จองสนาม - ระบบลงทะเบียนแบดมินตัน</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ระบบลงทะเบียนแบดมินตัน</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าหลัก</a></li>
+                    <li><a href="registration.html">ลงทะเบียนเล่น</a></li>
+                    <li><a href="booking.html" class="active">จองสนาม</a></li>
+                    <li><a href="calculate.html">คำนวณค่าใช้จ่าย</a></li>
+                    <li><a href="payment.html">ติดตามการชำระเงิน</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>จองสนามแบดมินตัน</h2>
+        
+        <div class="form-container">
+            <form id="booking-form">
+                <div class="form-section">
+                    <h3>ข้อมูลสนาม</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="play-date">วันที่</label>
+                            <input type="date" id="play-date" name="play-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="venue">สถานที่</label>
+                            <select id="venue" name="venue" required>
+                                <option value="">-- เลือกสถานที่ --</option>
+                                <option value="KN Complex">KN Complex</option>
+                                <option value="My House">My House</option>
+                                <option value="SCG Court">SCG Court</option>
+                                <option value="BB United">BB United</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-time">เวลาเริ่ม</label>
+                            <select id="start-time" name="start-time" required>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00" selected>17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time">เวลาสิ้นสุด</label>
+                            <select id="end-time" name="end-time" required>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00" selected>20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="court-count">จำนวนคอร์ท</label>
+                            <select id="court-count" name="court-count" required>
+                                <option value="1">1 คอร์ท</option>
+                                <option value="2" selected>2 คอร์ท</option>
+                                <option value="3">3 คอร์ท</option>
+                                <option value="4">4 คอร์ท</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="court-price">ราคาต่อชั่วโมง (บาท)</label>
+                            <input type="number" id="court-price" name="court-price" value="180" min="1" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>ข้อมูลลูกแบด</h3>
+                    <div id="shuttlecock-container">
+                        <div class="shuttlecock-item" data-index="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="shuttlecock-type-0">ประเภทลูกแบด</label>
+                                    <select id="shuttlecock-type-0" name="shuttlecock-type-0" required>
+                                        <option value="Victor No.3">Victor No.3</option>
+                                        <option value="Excella-77">Exc
