@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนเล่น - ระบบลงทะเบียนแบดมินตัน</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ระบบลงทะเบียนแบดมินตัน</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าหลัก</a></li>
+                    <li><a href="registration.html" class="active">ลงทะเบียนเล่น</a></li>
+                    <li><a href="booking.html">จองสนาม</a></li>
+                    <li><a href="calculate.html">คำนวณค่าใช้จ่าย</a></li>
+                    <li><a href="payment.html">ติดตามการชำระเงิน</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>ลงทะเบียนเล่นแบดมินตัน</h2>
+        
+        <div class="form-container">
+            <form id="registration-form">
+                <div class="form-section">
+                    <h3>ข้อมูลการเล่น</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="play-date">วันที่</label>
+                            <input type="date" id="play-date" name="play-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="venue">สถานที่</label>
+                            <select id="venue" name="venue" required>
+                                <option value="">-- เลือกสถานที่ --</option>
+                                <option value="KN Complex">KN Complex</option>
+                                <option value="My House">My House</option>
+                                <option value="SCG Court">SCG Court</option>
+                                <option value="BB United">BB United</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-time">เวลาเริ่ม</label>
+                            <select id="start-time" name="start-time" required>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00" selected>17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time">เวลาสิ้นสุด</label>
+                            <select id="end-time" name="end-time" required>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00" selected>20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>ข้อมูลผู้เล่น</h3>
+                    <div class="form-group">
+                        <label for="player-name">ชื่อเล่น</label>
+                        <input type="text" id="player-name" name="player-name" placeholder="กรุณากรอกชื่อเล่นของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="line-id">Line ID (ถ้ามี)</label>
+                        <input type="text" id="line-id" name="line-id" placeholder="กรุณากรอก Line ID ของคุณ (ไม่บังคับ)">
+                    </div>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="reset" class="btn" style="background-color: #ccc; margin-right: 10px;">ล้างข้อมูล</button>
+                    <button type="submit" class="btn">ลงทะเบียน</button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="player-list" style="margin-top: 30px;">
+            <h3>รายชื่อผู้ลงทะเบียน</h3>
+            <p>กำลังโหลดข้อมูล...</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ระบบลงทะเบียนแบดมินตัน | <a href="https://github.com/yourusername/badminton-registration" target="_blank">GitHub</a></p>
+        </div>
+    </footer>
+
+    <script src="js/registration.js"></script>
+</body>
+</html>
