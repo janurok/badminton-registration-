@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คำนวณค่าใช้จ่าย - ระบบลงทะเบียนแบดมินตัน</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ระบบลงทะเบียนแบดมินตัน</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">หน้าหลัก</a></li>
+                    <li><a href="registration.html">ลงทะเบียนเล่น</a></li>
+                    <li><a href="booking.html">จองสนาม</a></li>
+                    <li><a href="calculate.html" class="active">คำนวณค่าใช้จ่าย</a></li>
+                    <li><a href="payment.html">ติดตามการชำระเงิน</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>คำนวณค่าใช้จ่าย</h2>
+        
+        <div class="booking-selection" style="margin-bottom: 20px;">
+            <div class="form-group">
+                <label for="select-booking">เลือกรายการจองสนาม</label>
+                <select id="select-booking" name="select-booking">
+                    <option value="">-- เลือกรายการจอง --</option>
+                    <option value="sample1">KN Complex - วันอาทิตย์ที่ 15 เม.ย. 68 (17:00-20:00)</option>
+                    <option value="sample2">My House - วันอาทิตย์ที่ 8 เม.ย. 68 (17:00-20:00)</option>
+                    <option value="sample3">SCG Court - วันอาทิตย์ที่ 1 เม.ย. 68 (12:00-15:00)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="calculation-results" style="display: none;">
+            <div class="form-section">
+                <h3>ข้อมูลการจองสนาม</h3>
+                <div class="form-row">
+                    <div class="info-item">
+                        <label>สถานที่:</label>
+                        <div id="venue-display">KN Complex</div>
+                    </div>
+                    <div class="info-item">
+                        <label>วันที่:</label>
+                        <div id="date-display">วันอาทิตย์ที่ 15 เม.ย. 68</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="info-item">
+                        <label>เวลา:</label>
+                        <div id="time-display">17:00-20:00 น. (3 ชม.)</div>
+                    </div>
+                    <div class="info-item">
+                        <label>จำนวนผู้เล่น:</label>
+                        <div id="player-count-display">14 คน</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>รายการค่าใช้จ่าย</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">รายการ</th>
+                            <th style="width: 20%; text-align: center;">จำนวน</th>
+                            <th style="width: 20%; text-align: right;">ราคา (บาท)</th>
+                            <th style="width: 20%; text-align: right;">รวม (บาท)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-items">
+                        <tr>
+                            <td>ค่าคอร์ท (3 ชม.)</td>
+                            <td style="text-align: center;">2 คอร์ท</td>
+                            <td style="text-align: right;">180 / ชม.</td>
+                            <td style="text-align: right;">1,080</td>
+                        </tr>
+                        <tr>
+                            <td>ลูกแบด Victor No.3</td>
+                            <td style="text-align: center;">6 ลูก</td>
+                            <td style="text-align: right;">75 / ลูก</td>
+                            <td style="text-align: right;">450</td>
+                        </tr>
+                        <tr>
+                            <td>ค่า Lucky BBQ</td>
+                            <td style="text-align: center;">8 คน</td>
+                            <td style="text-align: right;">-</td>
+                            <td style="text-align: right;">1,800</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align: right; font-weight: bold;">รวมทั้งหมด</td>
+                            <td style="text-align: right; font-weight: bold;">3,330</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="form-section">
+                <h3>ค่าใช้จ่ายต่อคน</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60%;">ประเภทค่าใช้จ่าย</th>
+                            <th style="width: 20%; text-align: center;">จำนวนคน</th>
+                            <th style="width: 20%; text-align: right;">ค่าใช้จ่ายต่อคน (บาท)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ค่าคอร์ทและลูกแบด</td>
+                            <td style="text-align: center;">14</td>
+                            <td style="text-align: right;">109.29</td>
+                        </tr>
+                        <tr>
+                            <td>ค่า Lucky BBQ</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: right;">225.00</td>
+                        </tr>
+                        <tr>
+                            <td>รวมค่าใช้จ่ายสำหรับผู้เล่นที่ร่วมกิน BBQ</td>
+                            <td style="text-align: center;">8</td>
+                            <td style="text-align: right;">334.29</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="player-costs">
+                <div class="form-row">
+                    <div class="player-cost-list">
+                        <h4>ผู้เล่นที่ร่วมกิน BBQ (334.29 บาท/คน)</h4>
+                        <ol id="bbq-players">
+                            <li>แจน</li>
+                            <li>พี่เต็ม</li>
+                            <li>พี่ต่าย</li>
+                            <li>ปอนด์</li>
+                            <li>ฟ้า</li>
+                            <li>ป๋า</li>
+                            <li>แบงค์กี้</li>
+                            <li>นุโด</li>
+                        </ol>
+                    </div>
+                    <div class="player-cost-list">
+                        <h4>ผู้เล่นที่ไม่ได้กิน BBQ (109.29 บาท/คน)</h4>
+                        <ol id="non-bbq-players">
+                            <li>ชาย</li>
+                            <li>พี่กิ๊ฟ</li>
+                            <li>พี่พงษ์</li>
+                            <li>พ่อแจน</li>
+                            <li>ฝ้าย</li>
+                            <li>นัท</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>ข้อมูลการชำระเงิน</h3>
+                <div class="form-row">
+                    <div class="info-item" style="width: 60%;">
+                        <label>โอนเงินมาที่บัญชี:</label>
+                        <div>
+                            <p>083-595-1592</p>
+                            <p>น.ส. สถิตย์ภรณ์ โพธิ์ทอง</p>
+                        </div>
+                    </div>
+                    <div class="info-item" style="width: 40%;">
+                        <label>QR Code:</label>
+                        <div class="qr-placeholder">
+                            พื้นที่สำหรับ<br>QR Code<br>(150x150 px)
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <strong>หมายเหตุ:</strong> กรุณาโอนเงินตามจำนวนที่ระบุตามประเภทผู้เล่น
+                </div>
+            </div>
+            
+            <div class="form-buttons">
+                <button type="button" id="generate-bill" class="btn">สร้างบิลค่าใช้จ่าย HTML</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ระบบลงทะเบียนแบดมินตัน | <a href="https://github.com/yourusername/badminton-registration" target="_blank">GitHub</a></p>
+        </div>
+    </footer>
+
+    <script src="js/calculate.js"></script>
+</body>
+</html>
