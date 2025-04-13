@@ -1,7 +1,7 @@
 // sheets-api.js - ใช้สำหรับเชื่อมต่อกับ Google Sheets API
 
 // ใช้ App Script URL ของคุณ
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlNzQePTOSRbmHHAFxmxnmf1gqP3fSc2lChXuj_Ml4FHfGYMIo98DL7F9BEZZHyLsWsg/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWoZg-mdTb2pQ6TwHsH76OmzGs8nLib3VnjPs6yZA_2LEuuj5wGF6zZ8fOWvorJ_UqzA/exec';
 
 // ฟังก์ชันสำหรับอ่านข้อมูลจากชีท Players
 async function fetchPlayers() {
