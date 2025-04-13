@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // ฟังก์ชันสำหรับบันทึกข้อมูลไปยัง Google Sheets
     async function submitToGoogleSheets(formData) {
         try {
+            // แสดงข้อความกำลังดำเนินการ
+            const submitButton = registrationForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = 'กำลังบันทึก...';
+            submitButton.disabled = true;
+            
             const result = await addPlayer({
                 date: formData.playDate,
                 time: `${formData.startTime}-${formData.endTime}`,
@@ -17,17 +23,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 status: 'pending'
             });
             
+            // คืนค่าปุ่มกลับเป็นปกติ
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+            
             if (result.success) {
                 alert('ลงทะเบียนสำเร็จ!');
                 registrationForm.reset();
                 // รีโหลดรายชื่อผู้เล่น
                 fetchPlayerList();
             } else {
-                alert(`เกิดข้อผิดพลาด: ${result.message}`);
+                alert(`เกิดข้อผิดพลาด: ${result.message || 'ไม่สามารถบันทึกข้อมูลได้'}`);
             }
         } catch (error) {
             console.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล:', error);
             alert('เกิดข้อผิดพลาด: ไม่สามารถบันทึกข้อมูลได้');
+            
+            // คืนค่าปุ่มกลับเป็นปกติในกรณีเกิดข้อผิดพลาด
+            const submitButton = registrationForm.querySelector('button[type="submit"]');
+            submitButton.textContent = 'ลงทะเบียน';
+            submitButton.disabled = false;
         }
     }
     
@@ -45,6 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 lineId: document.getElementById('line-id').value
             };
             
+            // ตรวจสอบข้อมูลเบื้องต้น
+            if (!formData.playerName.trim()) {
+                alert('กรุณากรอกชื่อเล่น');
+                return;
+            }
+            
             submitToGoogleSheets(formData);
         });
     }
@@ -52,6 +73,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // ฟังก์ชันดึงข้อมูลรายชื่อผู้เล่น
     async function fetchPlayerList() {
         try {
+            // แสดงข้อความกำลังโหลด
+            playerListDiv.innerHTML = '<h3>รายชื่อผู้ลงทะเบียน</h3><p>กำลังโหลดข้อมูล...</p>';
+            
             const players = await fetchPlayers();
             renderPlayerList(players);
         } catch (error) {
@@ -65,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderPlayerList(players) {
         if (!playerListDiv) return;
         
-        if (players.length === 0) {
+        if (!players || players.length === 0) {
             playerListDiv.innerHTML = '<h3>รายชื่อผู้ลงทะเบียน</h3><p>ยังไม่มีผู้ลงทะเบียน</p>';
             return;
         }
