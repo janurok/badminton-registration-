@@ -129,7 +129,17 @@
   function sortToc(button) {
     const list = $('[data-toc]');
     if (!list) return;
-    list.append(...Array.from(list.children).reverse());
+    // Reverse the parts and the chapters inside each part, keeping part headings on top.
+    const groups = [];
+    for (const li of Array.from(list.children)) {
+      const isHead = li.classList.contains('toc-part');
+      if (isHead || !groups.length) groups.push({ head: isHead ? li : null, items: [] });
+      if (!isHead) groups[groups.length - 1].items.push(li);
+    }
+    for (const { head, items } of groups.reverse()) {
+      if (head) list.append(head);
+      list.append(...items.reverse());
+    }
     const newestFirst = button.getAttribute('aria-pressed') !== 'true';
     button.setAttribute('aria-pressed', String(newestFirst));
     button.textContent = newestFirst ? 'เรียงจากตอนแรก' : 'เรียงจากตอนล่าสุด';
