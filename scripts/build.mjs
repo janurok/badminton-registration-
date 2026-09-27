@@ -213,12 +213,17 @@ async function readNovel(slug, site) {
     const custom = data.label?.trim();
     if (!custom) number++;
     const label = custom || `ตอนที่ ${number}`;
+    const part = data.part?.trim() || '';
+    const partName = part.split(' · ')[0];
     const text = plainText(story);
     const words = countWords(text);
     chapters.push({
       slug: chSlug,
       label,
-      short: custom || String(number),
+      part,
+      // Chapter numbers may restart in each part, so "continue reading" also names the part.
+      fullLabel: part && !label.startsWith(partName) ? `${partName} ${label}` : label,
+      short: custom ? custom.match(/([\d๐-๙]+)\s*$/)?.[1] ?? custom : String(number),
       title: data.title || heading?.[1].trim() || label,
       date: parseDate(data.date),
       words,
@@ -384,6 +389,16 @@ function tocRow(n, c, base, current = false) {
     </a></li>`;
 }
 
+// Chapter rows, with a heading row whenever the part (ภาค) changes.
+function tocItems(n, base, current) {
+  let part = '';
+  return n.chapters.map(c => {
+    const head = c.part && c.part !== part ? `<li class="toc-part">${esc(c.part)}</li>\n` : '';
+    part = c.part;
+    return head + tocRow(n, c, base, c === current);
+  }).join('\n');
+}
+
 function novelCard(n) {
   const href = `n/${enc(n.slug)}/`;
   const first = n.chapters[0];
@@ -458,7 +473,7 @@ function novelPage(ctx, n) {
   ${n.synopsisHtml ? `<section class="synopsis" aria-labelledby="synopsis-title"><h2 id="synopsis-title" class="section-title">เรื่องย่อ</h2><div class="prose">${n.synopsisHtml}</div></section>` : ''}
   <section class="toc" id="toc" aria-labelledby="toc-title">
     <div class="section-head"><h2 id="toc-title" class="section-title">สารบัญ</h2>${n.chapters.length > 1 ? '<button class="text-btn" type="button" data-action="toc-sort" aria-pressed="false">เรียงจากตอนล่าสุด</button>' : ''}</div>
-    ${n.chapters.length ? `<ol class="toc-list" data-toc>${n.chapters.map(c => tocRow(n, c, '')).join('\n')}</ol>` : '<p class="empty">ยังไม่มีตอนที่เผยแพร่</p>'}
+    ${n.chapters.length ? `<ol class="toc-list" data-toc>${tocItems(n, '', null)}</ol>` : '<p class="empty">ยังไม่มีตอนที่เผยแพร่</p>'}
   </section>
 </main>
 ${footer(ctx)}
@@ -479,7 +494,7 @@ function chapterPage(ctx, n, i) {
       <strong>${esc(ch.title)}</strong>
     </a>`;
   const nextData = next
-    ? ` data-next-url="${esc(`n/${enc(n.slug)}/${enc(next.slug)}/`)}" data-next-label="${esc(next.label)}" data-next-title="${esc(next.title)}"`
+    ? ` data-next-url="${esc(`n/${enc(n.slug)}/${enc(next.slug)}/`)}" data-next-label="${esc(next.fullLabel)}" data-next-title="${esc(next.title)}"`
     : '';
   const body = `<div class="progress" aria-hidden="true"><i data-progress></i></div>
 <header class="readerbar" data-readerbar>
@@ -488,9 +503,10 @@ function chapterPage(ctx, n, i) {
   <button class="icon-btn" type="button" data-open="toc" aria-label="สารบัญ">${ICONS.toc}</button>
   <button class="icon-btn" type="button" data-open="settings" aria-label="ตั้งค่าการอ่าน">${ICONS.type}</button>
 </header>
-<main id="main" class="reader" data-novel="${esc(n.slug)}" data-chapter="${esc(`${n.slug}/${c.slug}`)}" data-url="${esc(url)}" data-novel-title="${esc(n.title)}" data-label="${esc(c.label)}" data-title="${esc(c.title)}"${nextData}>
+<main id="main" class="reader" data-novel="${esc(n.slug)}" data-chapter="${esc(`${n.slug}/${c.slug}`)}" data-url="${esc(url)}" data-novel-title="${esc(n.title)}" data-label="${esc(c.fullLabel)}" data-title="${esc(c.title)}"${nextData}>
   <article class="chapter">
     <header class="chapter-head">
+      ${c.part ? `<p class="chapter-part">${esc(c.part)}</p>` : ''}
       ${TITLE_HAS_NUMBER.test(c.title) ? '' : `<p class="chapter-label">${esc(c.label)}</p>`}
       <h1 class="chapter-title">${esc(c.title)}</h1>
       <p class="chapter-meta">${[fmtDate(c.date), `อ่านประมาณ ${fmtMinutes(c.minutes)}`].filter(Boolean).join(' · ')}</p>
@@ -507,7 +523,7 @@ ${c.html}
 </main>
 <section class="sheet sheet-side" data-sheet="toc" role="dialog" aria-modal="true" aria-labelledby="toc-sheet-title" hidden>
   <div class="sheet-head"><h2 id="toc-sheet-title">สารบัญ</h2><button class="icon-btn" type="button" data-close aria-label="ปิด">${ICONS.close}</button></div>
-  <ol class="toc-list is-compact">${n.chapters.map(ch => tocRow(n, ch, '../', ch === c)).join('\n')}</ol>
+  <ol class="toc-list is-compact">${tocItems(n, '../', c)}</ol>
 </section>
 ${settingsSheet(true)}
 ${scrim}`;

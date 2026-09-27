@@ -321,8 +321,11 @@ h1, h2, h3 { text-wrap: balance; }
 .toc-list { margin: 0; padding: 0; list-style: none; }
 .toc-list > li { border-bottom: 1px solid var(--line); }
 .toc-list > li:last-child { border-bottom: 0; }
+.toc-list > .toc-part { padding: 26px 0 8px; border-bottom: 0; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; color: var(--accent); }
+.toc-list > .toc-part:first-child { padding-top: 14px; }
+.toc-list.is-compact > .toc-part { padding: 18px 10px 6px; font-size: 0.85rem; }
 .toc-row {
-  display: grid; grid-template-columns: 3.2em minmax(0, 1fr) auto; align-items: baseline; gap: 2px 14px;
+  display: grid; grid-template-columns: 3.6em minmax(0, 1fr) auto; align-items: baseline; gap: 2px 14px;
   margin: 0 -10px; padding: 14px 10px; border-radius: 10px;
   transition: background-color 0.15s;
 }
@@ -344,11 +347,11 @@ h1, h2, h3 { text-wrap: balance; }
   font-family: var(--font-ui); font-size: 0.7rem; font-weight: 600; vertical-align: 0.15em;
 }
 @media (max-width: 600px) {
-  .toc-row { grid-template-columns: 3.2em minmax(0, 1fr); }
+  .toc-row { grid-template-columns: 3.6em minmax(0, 1fr); }
   .toc-meta { grid-column: 2; }
 }
 .toc-list.is-compact > li { border-bottom: 0; }
-.toc-list.is-compact .toc-row { grid-template-columns: 3.2em minmax(0, 1fr); margin: 0; }
+.toc-list.is-compact .toc-row { grid-template-columns: 3.6em minmax(0, 1fr); margin: 0; }
 .toc-list.is-compact .toc-meta { display: none; }
 
 /* ---------- reader ---------- */
@@ -378,6 +381,7 @@ h1, h2, h3 { text-wrap: balance; }
 .chapter { max-width: var(--read-width); margin: 0 auto; font-size: var(--read-size); }
 .chapter-head { margin-bottom: 2.6em; text-align: center; }
 .chapter-label { margin: 0 0 0.5em; color: var(--accent); font-size: 0.72em; font-weight: 600; }
+.chapter-part { margin: 0 0 0.3em; color: var(--muted); font-size: 0.66em; }
 .chapter-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.55em; line-height: 1.45; }
 .chapter-meta { margin: 0.9em 0 0; color: var(--muted); font-size: 0.7em; }
 .chapter-head::after { content: ""; display: block; width: 44px; height: 1px; margin: 1.8em auto 0; background: var(--accent); opacity: 0.5; }
@@ -390,6 +394,15 @@ h1, h2, h3 { text-wrap: balance; }
 .chapter-body h2 { font-size: 1.25em; }
 .chapter-body h3 { font-size: 1.1em; }
 .chapter-body :is(h4, h5) { font-size: 1em; }
+/* "#### มุมมอง: ..." marks a change of narrator or section: a small label between two rules. */
+.chapter-body h5 {
+  display: flex; align-items: center; gap: 0.9em;
+  margin: 2.6em 0 1.4em;
+  font-family: var(--font-ui); font-size: 0.74em; color: var(--accent);
+}
+.chapter-body h5::before, .chapter-body h5::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.chapter-body > h5:first-child { margin-top: 0; }
+.chapter-body .scene-break:has(+ h5) { display: none; } /* the divider already marks the break */
 .chapter-body blockquote {
   margin: 1.6em 0; padding: 0.1em 0 0.1em 1.1em;
   border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
